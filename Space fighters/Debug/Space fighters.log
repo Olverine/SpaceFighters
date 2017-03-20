@@ -1,0 +1,32 @@
+﻿  Microsoft (R) C/C++ Optimizing Compiler Version 19.00.24215.1 for x86
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  
+  cl /c /I"C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\Space fighters\\" /I"C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\Space fighters\..\deps\glew-2.0.0\include" /I"C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\Space fighters\..\deps\glm-0.9.8.3" /I"C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\Space fighters\..\deps\glfw\Win32\include\GLFW" /ZI /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Actor.cpp BackgroundParticles.cpp Bounds.cpp Camera.cpp Essentials.cpp Input.cpp MultiChaseCam.cpp ParticleEmitter.cpp Projectile.cpp ShaderCompiler.cpp "Space fighters.cpp" stdafx.cpp PlayerShip.cpp
+  
+  PlayerShip.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\playership.cpp(32): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  stdafx.cpp
+  Space fighters.cpp
+  ShaderCompiler.cpp
+  Projectile.cpp
+  ParticleEmitter.cpp
+  MultiChaseCam.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\multichasecam.cpp(35): warning C4018: '<': signed/unsigned mismatch
+  Input.cpp
+  Essentials.cpp
+  Camera.cpp
+  Bounds.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\bounds.cpp(10): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\bounds.cpp(14): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\bounds.cpp(18): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\bounds.cpp(22): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\bounds.cpp(26): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\bounds.cpp(30): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\bounds.cpp(34): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\bounds.cpp(38): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+  BackgroundParticles.cpp
+  Actor.cpp
+  Generating Code...
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  Space fighters.vcxproj -> C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\Debug\Space fighters.exe
+  Space fighters.vcxproj -> C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\Debug\Space fighters.pdb (Full PDB)
