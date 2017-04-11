@@ -1,0 +1,38 @@
+﻿  UIText.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\uitext.h(2): fatal error C1083: Cannot open include file: 'Actor.h': No such file or directory
+  Text.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\text.h(3): fatal error C1083: Cannot open include file: 'ft2build.h': No such file or directory
+  PlayerShip.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\playership.h(2): fatal error C1083: Cannot open include file: 'ParticleEmitter.h': No such file or directory
+  Space fighters.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\space fighters.cpp(4): fatal error C1083: Cannot open include file: 'Engine.h': No such file or directory
+  ShaderCompiler.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\shadercompiler.cpp(1): fatal error C1083: Cannot open include file: 'Engine.h': No such file or directory
+  Projectile.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\projectile.h(2): fatal error C1083: Cannot open include file: 'Engine.h': No such file or directory
+  PopText.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\uitext.h(2): fatal error C1083: Cannot open include file: 'Actor.h': No such file or directory
+  Pickup.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\actor.h(3): fatal error C1083: Cannot open include file: 'glm\glm.hpp': No such file or directory
+  ParticleEmitter.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\particleemitter.h(2): fatal error C1083: Cannot open include file: 'Actor.h': No such file or directory
+  MultiChaseCam.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\camera.h(2): fatal error C1083: Cannot open include file: 'Engine.h': No such file or directory
+  Input.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\input.h(2): fatal error C1083: Cannot open include file: 'Engine.h': No such file or directory
+  HealthPickup.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\actor.h(3): fatal error C1083: Cannot open include file: 'glm\glm.hpp': No such file or directory
+  FramerateCounter.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\uitext.h(2): fatal error C1083: Cannot open include file: 'Actor.h': No such file or directory
+  Font.cpp
+  Essentials.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\essentials.cpp(2): fatal error C1083: Cannot open include file: 'glm\glm.hpp': No such file or directory
+  Camera.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\camera.h(2): fatal error C1083: Cannot open include file: 'Engine.h': No such file or directory
+  Bounds.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\actor.h(3): fatal error C1083: Cannot open include file: 'glm\glm.hpp': No such file or directory
+  BackgroundParticles.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\actor.h(3): fatal error C1083: Cannot open include file: 'glm\glm.hpp': No such file or directory
+  Actor.cpp
+c:\users\noolt4\source\repos\spacefightersopenglproject\space fighters\actor.h(3): fatal error C1083: Cannot open include file: 'glm\glm.hpp': No such file or directory
+  Generating Code...

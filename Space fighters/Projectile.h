@@ -13,7 +13,7 @@ class Projectile : public Actor
 public:
 	glm::vec3 color;
 	glm::vec3 velocity;
-	Projectile(glm::vec3, glm::vec3, PlayerShip* shooter);
+	Projectile(GLuint shaderProgram, glm::vec3, glm::vec3, PlayerShip* shooter);
 
 	void Update(double deltaTime);
 	void Render();

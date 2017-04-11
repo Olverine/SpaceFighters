@@ -1,6 +1,7 @@
 #pragma once
 #include <ParticleEmitter.h>
 #include <Projectile.h>
+#include <UIText.h>
 
 class PlayerShip : public Actor
 {
@@ -15,6 +16,8 @@ public:
 	glm::vec3 color;
 	//ParticleEmitter* engineParticles;
 	int health = 3;
+	UIText *healthText;
+
 	PlayerShip(int controllerId, GLuint shaderProgram, glm::vec3 color);
 
 	void Update(double deltaTime);

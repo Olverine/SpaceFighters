@@ -7,17 +7,14 @@ Actor::Actor() {
 
 void Actor::Initialize() { 
 	glGenBuffers(1, &vertexbuffer);
-	if (vertices.size() > 0) {
-		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), &vertices[0], GL_STATIC_DRAW);
-	}
+	RebindVertices();
 }
 
 void Actor::RebindVertices()
 {
 	if (vertices.size() > 0) {
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), &vertices[0], usage);
 	}
 }
 
@@ -26,7 +23,8 @@ void Actor::Update(double deltaTime) {
 }
 
 void Actor::Render() {
+	glUseProgram(shaderProgram);
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glVertexAttribPointer(0, vertSize, GL_FLOAT, GL_FALSE, 0, (void*)0);
 }

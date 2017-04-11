@@ -6,17 +6,24 @@
 #include <BackgroundParticles.h>
 #include <Bounds.h>
 #include <MultiChaseCam.h>
+#include <Text.h>
+#include <FramerateCounter.h>
+#include <HealthPickup.h>
 
 void MainLoop();
 GLFWwindow* window;
 bool fullscreen = false;
 
-std::list<Actor*> activeActors;
+std::vector<Actor*> activeActors;
 
-std::list<Actor*> spawnQueue;
-std::list<Actor*> despawnQueue;
+std::vector<Actor*> spawnQueue;
+std::vector<Actor*> despawnQueue;
 Camera* camera;
-GLuint shaderMvp;
+GLuint shaderMvp = 0;
+Text* text;
+Font* defaultFont;
+
+const char* font = "fonts/ITCEDSCR.TTF";
 
 int main()
 {
@@ -27,14 +34,14 @@ int main()
 		return -1;
 	}
 
-	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_SAMPLES, 1);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Open a window and create its OpenGL context
-	window = glfwCreateWindow(1366, 768, "Game", fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
+	window = glfwCreateWindow(1280, 720, "Game", fullscreen ? glfwGetPrimaryMonitor() : NULL, NULL);
 	if (window == NULL) {
 		fprintf(stderr, "Failed to open GLFW window.\n");
 		glfwTerminate();
@@ -55,21 +62,36 @@ int main()
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 	Input::Init();
 
+	defaultFont = new Font("fonts/font");
+
+	//text = new Text(font, 48, vec3(1, 0, 0));
+	
+	// Load shaders
+	GLuint shaderProgram = LoadShaders("shaders/basicVertex.glsl", "shaders/basicFragment.glsl");
+
+	UIText* playerLabel = new UIText(shaderProgram, defaultFont);
+	playerLabel->position = vec3(1, 15, 0);
+	playerLabel->scale = vec3(0.2f, 0.2f, 0);
+	playerLabel->SetText("Name      Health  Powerup");
+	activeActors.push_back(playerLabel);
+
+	Spawn(new HealthPickup(shaderProgram));
+
+	// Create players
 	vec3 colors[] = {
 		vec3(0, 0.5f, 1),
 		vec3(1, 0, 0),
 		vec3(0, 1, 0),
-		vec3(1, 0, 1)
+		vec3(1, 1, 0)
 	};
-
-	GLuint shaderProgram = LoadShaders("shaders/basicVertex.glsl", "shaders/basicFragment.glsl");
 
 	camera = new MultiChaseCam();
 	for (int i = 0; i < 4; i++) {
-		if (glfwJoystickPresent(i)) {
+		//if (glfwJoystickPresent(i)) {
 			activeActors.push_back(new PlayerShip(i, shaderProgram, colors[i]));
 			dynamic_cast<MultiChaseCam*>(camera)->targets.push_back(activeActors.back());
-		}
+			activeActors.back()->position.x = -24 + i * 16;
+		//}
 	} 
 	activeActors.push_back(new BackgroundParticles(vec3(1000, 1000, 200), 20000, shaderProgram));
 	activeActors.push_back(new Bounds(vec2(500, 500), shaderProgram, vec3(0.2f, 1, 1)));
@@ -78,6 +100,12 @@ int main()
 	for each (Actor* actor in activeActors) {
 		actor->Initialize();
 	}
+	
+	FramerateCounter* fc = new FramerateCounter(shaderProgram);
+	fc->scale = vec3(0.2, 0.2, 0.2);
+	fc->position = vec3(1, -0.5, 0);
+	fc->Initialize();
+	activeActors.push_back(fc);
 
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
@@ -89,10 +117,12 @@ int main()
     return 0;
 }
 
+double lastFrame = 0;
+
 void MainLoop() {
-	double lastFrame = 0;
 	do {
-		double deltaTime = glfwGetTime() - lastFrame;
+		double time = glfwGetTime();
+		double deltaTime = time - lastFrame;
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -100,16 +130,22 @@ void MainLoop() {
 		//camera->lookAt = activeActors.front()->position;
 		camera->Update();
 
-		glm::mat4 Projection = camera->GetProjection();
-		glm::mat4 View = camera->GetView();
-
+		glm::mat4 projection = camera->GetProjection();
+		glm::mat4 UIProjection = glm::ortho(0.0f, 32.0f, -2.0f, 16.0f);
+		glm::mat4 view = camera->GetView();
+		glm::mat4 mvp;
 
 		for each (Actor* actor in activeActors) {
 			actor->Update(deltaTime * 100);
 			glUseProgram(actor->shaderProgram);
 			glm::quat rot = quat(actor->rotation);
-			glm::mat4 model = glm::translate(glm::mat4(1.0f), actor->position) * glm::mat4_cast(rot);
-			glm::mat4 mvp = Projection * View * model;
+			glm::mat4 model = glm::translate(glm::mat4(1.0f), actor->position) * glm::mat4_cast(rot) * glm::scale(mat4(1.0f),actor->scale);
+			if (actor->fixedOnScreen) {
+				mvp = /*mat4(1.0f)*/UIProjection * model;
+			}
+			else {
+				mvp = projection * view * model;
+			}
 			glUniformMatrix4fv(shaderMvp, 1, GL_FALSE, &mvp[0][0]);
 			actor->Render();
 		}
@@ -119,14 +155,18 @@ void MainLoop() {
 		}
 		spawnQueue.clear();
 		for each (Actor* actor in despawnQueue) {
-			activeActors.remove(actor);
+			for (int i = 0; i < activeActors.size(); i++) {
+				if (activeActors[i] == actor) {
+					activeActors.erase(activeActors.begin() + i);
+				}
+			}
 			delete(actor);
 		}
 		despawnQueue.clear();
 
-		lastFrame = glfwGetTime();
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+		lastFrame = time;
 	} while (!glfwWindowShouldClose(window));
 }
 
@@ -144,4 +184,8 @@ GLFWwindow* GetWindow() {
 
 Camera* GetCamera() {
 	return (camera);
+}
+
+Font* GetDefaultFont() {
+	return defaultFont;
 }

@@ -1,6 +1,6 @@
 #include "Projectile.h"
 
-Projectile::Projectile(glm::vec3 position, glm::vec3 velocity, PlayerShip* shooter) {
+Projectile::Projectile(GLuint shaderProgram, glm::vec3 position, glm::vec3 velocity, PlayerShip* shooter) {
 	vertices = {
 		0, 0, 0
 	};
@@ -10,6 +10,7 @@ Projectile::Projectile(glm::vec3 position, glm::vec3 velocity, PlayerShip* shoot
 	lifeTime = 0;
 	maxLifeTime = 60;
 	Initialize();
+	this->shaderProgram = shaderProgram;
 	this->color = shooter->color;
 	colorID = glGetUniformLocation(shaderProgram, "inColor");
 }
@@ -20,9 +21,11 @@ void Projectile::Update(double deltaTime) {
 	lifeTime+= deltaTime;
 	for (int i = 0; i < PlayerShip::GetNumberOfplayers(); i++)
 	{
-		if (Distance(position, PlayerShip::GetShip(i)->position) < 1 && PlayerShip::GetShip(i) != shooter) {
-			PlayerShip::GetShip(i)->Damage();
-			Despawn(this);
+		if (PlayerShip::GetShip(i) != 0 || PlayerShip::GetShip(i)->health > 0) {
+			if (Distance(position, PlayerShip::GetShip(i)->position) < 1 && PlayerShip::GetShip(i) != shooter) {
+				PlayerShip::GetShip(i)->Damage();
+				Despawn(this);
+			}
 		}
 	}
 

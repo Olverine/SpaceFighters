@@ -8,7 +8,9 @@
 #include <Camera.h> 
 #include <Input.h>
 #include <PlayerShip.h>
-#include <list>
+#include <map>
+#include <string>
+#include <Font.h>
 using namespace glm;
 
 GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_path);
@@ -22,3 +24,5 @@ float LerpAngle(float, float, float);
 vec3 LerpVector(vec3, vec3, float);
 
 float Distance(glm::vec2 p1, glm::vec2 p2);
+
+Font* GetDefaultFont();

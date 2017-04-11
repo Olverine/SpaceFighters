@@ -1,5 +1,6 @@
 #include "PlayerShip.h"
 #include "MultiChaseCam.h"
+#include <PopText.h>
 
 PlayerShip* players[4];
 int numberOfPlayers;
@@ -20,6 +21,14 @@ PlayerShip::PlayerShip(int controllerId, GLuint shaderProgram, vec3 color) {
 	players[numberOfPlayers] = this;
 	numberOfPlayers++;
 
+	healthText = new UIText(shaderProgram, GetDefaultFont());
+	healthText->position = glm::vec3(1, 14 - 0.75f * (float)playerControllerId, 0);
+	healthText->scale = glm::vec3(.2f, 0.2f, 1.0f);
+	healthText->Initialize();
+	healthText->color = color;
+	Spawn(healthText);
+	healthText->SetText("Player " + std::to_string(controllerId + 1) + ": " + std::to_string(health) + "       None");
+
 	//engineParticles = new ParticleEmitter(shaderProgram);
 	//Spawn(engineParticles);
 	//engineParticles->Initialize();
@@ -38,7 +47,8 @@ void PlayerShip::Update(double deltaTime) {
 //	engineParticles->position = position;
 	if (Input::GetButtonDown(playerControllerId, 0)) {
 		vec3 pVelocity = vec3(-sin(rotation.z), cos(rotation.z), 0);
-		Spawn(new Projectile(position, (pVelocity * 2.0f) + velocity, this));
+		Projectile *tmp_spawn = new Projectile(shaderProgram, position, (pVelocity * 2.0f) + velocity, this);
+		Spawn(tmp_spawn);
 	}
 	//engineParticles->Emit(position, vec3(sin(rotation.z), -cos(rotation.z), 0) * length(inputVector));'
 
@@ -69,8 +79,15 @@ void PlayerShip::Render() {
 }  
 
 void PlayerShip::Damage() {
+	if (health <= 0) return;
+
+	new PopText(shaderProgram, GetDefaultFont(), position - vec3(2,0,0), vec3(1, 1, 1), "hit");
+
 	health--;
+	healthText->SetText("Player " + std::to_string(playerControllerId + 1) + "  " + std::to_string(health) + "       None");
+
 	if (health <= 0) {
+		healthText->SetText("Player " + std::to_string(playerControllerId + 1) + "  Dead \x07  None");
 		dynamic_cast<MultiChaseCam*>(GetCamera())->RemoveTarget(this);
 		Despawn(this);
 	}
