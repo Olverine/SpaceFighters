@@ -7,8 +7,19 @@ class UIText :
 {
 	int numberOfVerts = 0;
 	Font* font;
+	GLuint colorID;
 public:
-	UIText(GLuint shaderProgram, Font* font);
+	UIText(GLuint shdr, Font* fnt) : Actor() {
+		font = fnt;
+		shaderProgram = shdr;
+		colorID = glGetUniformLocation(shaderProgram, "inColor");
+
+
+		usage = GL_DYNAMIC_DRAW;
+		vertSize = 2;
+		fixedOnScreen = true;
+	}
+
 	void SetText(std::string text);
 	void Render();
 };

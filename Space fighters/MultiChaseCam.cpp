@@ -38,9 +38,9 @@ void MultiChaseCam::Update() {
 	position += vec3(0, 0, zoom);
 }
 
-void MultiChaseCam::RemoveTarget(Actor* target) {
+void MultiChaseCam::RemoveTarget(unsigned id) {
 	for (int i = 0; i < targets.size(); i++) {
-		if (targets[i] == target) {
+		if (targets[i]->id == id) {
 			targets.erase(targets.begin() + i);
 		}
 	}

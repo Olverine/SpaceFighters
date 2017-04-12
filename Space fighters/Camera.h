@@ -17,5 +17,3 @@ public:
 	glm::mat4 GetProjection();
 	glm::mat4 GetView();
 };
-
-Camera* GetCamera();

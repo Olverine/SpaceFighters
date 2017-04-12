@@ -6,21 +6,19 @@
 #include <BackgroundParticles.h>
 #include <Bounds.h>
 #include <MultiChaseCam.h>
-#include <Text.h>
 #include <FramerateCounter.h>
-#include <HealthPickup.h>
+#include <PowerupPickup.h>
 
 void MainLoop();
 GLFWwindow* window;
 bool fullscreen = false;
 
-std::vector<Actor*> activeActors;
+std::vector<Actor> activeActors;
 
-std::vector<Actor*> spawnQueue;
-std::vector<Actor*> despawnQueue;
-Camera* camera;
+std::vector<Actor> spawnQueue;
+std::vector<unsigned> despawnQueue;
+MultiChaseCam camera;
 GLuint shaderMvp = 0;
-Text* text;
 Font* defaultFont;
 
 const char* font = "fonts/ITCEDSCR.TTF";
@@ -69,13 +67,13 @@ int main()
 	// Load shaders
 	GLuint shaderProgram = LoadShaders("shaders/basicVertex.glsl", "shaders/basicFragment.glsl");
 
-	UIText* playerLabel = new UIText(shaderProgram, defaultFont);
-	playerLabel->position = vec3(1, 15, 0);
-	playerLabel->scale = vec3(0.2f, 0.2f, 0);
-	playerLabel->SetText("Name      Health  Powerup");
-	activeActors.push_back(playerLabel);
+	UIText playerLabel = UIText(shaderProgram, defaultFont);
+	playerLabel.position = vec3(1, 15, 0);
+	playerLabel.scale = vec3(0.2f, 0.2f, 0);
+	playerLabel.SetText("Name      Health  Powerup");
+	Spawn(playerLabel);
 
-	Spawn(new HealthPickup(shaderProgram));
+	Spawn(PowerupPickup(shaderProgram));
 
 	// Create players
 	vec3 colors[] = {
@@ -85,27 +83,29 @@ int main()
 		vec3(1, 1, 0)
 	};
 
-	camera = new MultiChaseCam();
+	camera = MultiChaseCam();
 	for (int i = 0; i < 4; i++) {
 		if (glfwJoystickPresent(i)) {
-			activeActors.push_back(new PlayerShip(i, shaderProgram, colors[i]));
-			dynamic_cast<MultiChaseCam*>(camera)->targets.push_back(activeActors.back());
-			activeActors.back()->position.x = -24 + i * 16;
+			printf("HEJ :) \x07");
+			PlayerShip ps = PlayerShip(i, shaderProgram, colors[i]);
+			ps.position.x = -24 + i * 16;
+			Spawn(ps);
+			camera.targets.push_back((PlayerShip *)&ps);
 		}
 	} 
-	activeActors.push_back(new BackgroundParticles(vec3(1000, 1000, 200), 20000, shaderProgram));
-	activeActors.push_back(new Bounds(vec2(500, 500), shaderProgram, vec3(0.2f, 1, 1)));
-	activeActors.push_back(new ParticleEmitter(shaderProgram));
+	Spawn(BackgroundParticles(vec3(1000, 1000, 200), 20000, shaderProgram));
+	Spawn(Bounds(vec2(500, 500), shaderProgram, vec3(0.2f, 1, 1)));
+	Spawn(ParticleEmitter(shaderProgram));
 
-	for each (Actor* actor in activeActors) {
-		actor->Initialize();
+	for each (Actor actor in activeActors) {
+		actor.Initialize();
 	}
 	
-	FramerateCounter* fc = new FramerateCounter(shaderProgram);
-	fc->scale = vec3(0.2, 0.2, 0.2);
-	fc->position = vec3(1, -0.5, 0);
-	fc->Initialize();
-	activeActors.push_back(fc);
+	FramerateCounter fc = FramerateCounter(shaderProgram);
+	fc.scale = vec3(0.2, 0.2, 0.2);
+	fc.position = vec3(1, -0.5, 0);
+	fc.Initialize();
+	Spawn(fc);
 
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
@@ -128,39 +128,42 @@ void MainLoop() {
 
 		//camera->position = LerpVector(camera->position, activeActors.front()->position + vec3(0, 0, 64), 0.01f);
 		//camera->lookAt = activeActors.front()->position;
-		camera->Update();
+		camera.Update();
 
-		glm::mat4 projection = camera->GetProjection();
+		glm::mat4 projection = camera.GetProjection();
 		glm::mat4 UIProjection = glm::ortho(0.0f, 32.0f, -2.0f, 16.0f);
-		glm::mat4 view = camera->GetView();
+		glm::mat4 view = camera.GetView();
 		glm::mat4 mvp;
 
-		for each (Actor* actor in activeActors) {
-			actor->Update(deltaTime * 100);
-			glUseProgram(actor->shaderProgram);
-			glm::quat rot = quat(actor->rotation);
-			glm::mat4 model = glm::translate(glm::mat4(1.0f), actor->position) * glm::mat4_cast(rot) * glm::scale(mat4(1.0f),actor->scale);
-			if (actor->fixedOnScreen) {
+		for each (Actor actor in activeActors) {
+			printf("GGWP %u\n", actor.id);
+			actor.Update(deltaTime * 100);
+			glUseProgram(actor.shaderProgram);
+			glm::quat rot = quat(actor.rotation);
+			glm::mat4 model = glm::translate(glm::mat4(1.0f), actor.position) * glm::mat4_cast(rot) * glm::scale(mat4(1.0f),actor.scale);
+			if (actor.fixedOnScreen) {
 				mvp = /*mat4(1.0f)*/UIProjection * model;
 			}
 			else {
 				mvp = projection * view * model;
 			}
 			glUniformMatrix4fv(shaderMvp, 1, GL_FALSE, &mvp[0][0]);
-			actor->Render();
+			actor.Render();
 		}
 
-		for each (Actor* actor in spawnQueue) {
+		for each (Actor actor in spawnQueue) {
 			activeActors.push_back(actor);
+			printf("Spawned: %u\n%i\n", actor.id, activeActors.size());
+			activeActors.back().Render();
 		}
 		spawnQueue.clear();
-		for each (Actor* actor in despawnQueue) {
+		for each (unsigned id in despawnQueue) {
 			for (int i = 0; i < activeActors.size(); i++) {
-				if (activeActors[i] == actor) {
+				if (activeActors[i].id == id) {
 					activeActors.erase(activeActors.begin() + i);
+					printf("Despawned: %u\n", id);
 				}
 			}
-			delete(actor);
 		}
 		despawnQueue.clear();
 
@@ -170,22 +173,30 @@ void MainLoop() {
 	} while (!glfwWindowShouldClose(window));
 }
 
-void Spawn(Actor* actor) {
+unsigned id = 0;
+void Spawn(Actor actor) {
+	actor.id = id++;
 	spawnQueue.push_back(actor);
+	printf("%u %f %f\n", actor.id, actor.position.x, actor.position.y);
 }
 
-void Despawn(Actor* actor) {
-	despawnQueue.push_back(actor);
+void Despawn(unsigned id) {
+	despawnQueue.push_back(id);
 }
 
 GLFWwindow* GetWindow() {
 	return window;
 }
 
-Camera* GetCamera() {
+MultiChaseCam GetCamera() {
 	return (camera);
 }
 
 Font* GetDefaultFont() {
 	return defaultFont;
+}
+
+void ShrinkVector() {
+	//activeActors.shrink_to_fit();
+	activeActors.swap(activeActors);
 }

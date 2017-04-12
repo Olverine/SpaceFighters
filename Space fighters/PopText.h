@@ -10,9 +10,8 @@ public:
 		this->position = position;
 		this->color = color;
 		this->fixedOnScreen = false;
-		SetText(text);
 		Initialize();
-		Spawn(this);
+		SetText(text);
 	};
 
 	void Update(double deltaTime);

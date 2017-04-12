@@ -165,11 +165,11 @@
     <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="Pickup.h" />
     <ClInclude Include="PopText.h" />
+    <ClInclude Include="PowerupPickup.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="PlayerShip.h" />
-    <ClInclude Include="Text.h" />
     <ClInclude Include="UIText.h" />
   </ItemGroup>
   <ItemGroup>
@@ -186,12 +186,12 @@
     <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="Pickup.cpp" />
     <ClCompile Include="PopText.cpp" />
+    <ClCompile Include="PowerupPickup.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ShaderCompiler.cpp" />
     <ClCompile Include="Space fighters.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="PlayerShip.cpp" />
-    <ClCompile Include="Text.cpp" />
     <ClCompile Include="UIText.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

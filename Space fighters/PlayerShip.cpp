@@ -5,12 +5,21 @@
 PlayerShip* players[4];
 int numberOfPlayers;
 
+std::string powerupNames[] = {
+	"None",
+	"Machine gun",
+	"Multi barrel",
+	"Turbo"
+};
+
 PlayerShip::PlayerShip(int controllerId, GLuint shaderProgram, vec3 color) {
 	vertices = {
 		-0.5f, -1.0f, 0.0f,
 		0.5f, -1.0f, 0.0f,
 		0.0f,  1.0f, 0.0f,
 	};
+
+	Initialize();
 
 	playerControllerId = controllerId;
 
@@ -21,36 +30,50 @@ PlayerShip::PlayerShip(int controllerId, GLuint shaderProgram, vec3 color) {
 	players[numberOfPlayers] = this;
 	numberOfPlayers++;
 
-	healthText = new UIText(shaderProgram, GetDefaultFont());
-	healthText->position = glm::vec3(1, 14 - 0.75f * (float)playerControllerId, 0);
-	healthText->scale = glm::vec3(.2f, 0.2f, 1.0f);
-	healthText->Initialize();
-	healthText->color = color;
+	healthText = UIText(shaderProgram, GetDefaultFont());
+	healthText.position = glm::vec3(1, 14 - 0.75f * (float)playerControllerId, 0);
+	healthText.scale = glm::vec3(.2f, 0.2f, 1.0f);
+	healthText.Initialize();
+	healthText.color = color;
 	Spawn(healthText);
-	healthText->SetText("Player " + std::to_string(controllerId + 1) + ": " + std::to_string(health) + "       None");
-
-	//engineParticles = new ParticleEmitter(shaderProgram);
-	//Spawn(engineParticles);
-	//engineParticles->Initialize();
+	healthText.SetText("Player " + std::to_string(controllerId + 1) + ": " + std::to_string(health) + "       None");
 }
 
 void PlayerShip::Update(double deltaTime) {
+	printf("%u (%f, %f)\n", id, position.x, position.y);
 	vec2 inputVector = vec2(glm::radians(-Input::GetAxis(playerControllerId, 0)), glm::radians(Input::GetAxis(playerControllerId, 1)));
 	if (length(inputVector) > 0) {
 		float angle = atan2(inputVector.x, inputVector.y);
-		rotation = vec3(0, 0, LerpAngle(rotation.z, angle, angularSpeed * deltaTime));
+		rotation = vec3(0, 0, LerpAngle(rotation.z, angle, angularSpeed * float(deltaTime)));
 	}
 
 	velocity += vec3(-sin(rotation.z), cos(rotation.z), 0) * length(inputVector) * (float)(acceleration * deltaTime);
 	position += velocity;
 	velocity = LerpVector(velocity, vec3(0, 0, 0), drag);
-//	engineParticles->position = position;
-	if (Input::GetButtonDown(playerControllerId, 0)) {
-		vec3 pVelocity = vec3(-sin(rotation.z), cos(rotation.z), 0);
-		Projectile *tmp_spawn = new Projectile(shaderProgram, position, (pVelocity * 2.0f) + velocity, this);
-		Spawn(tmp_spawn);
+
+	if (powerup == 1) {
+		if (Input::GetButton(playerControllerId, 0)) {
+			if (fireTime >= fireRate) {
+				Shoot(rotation.z);
+				fireTime = 0;
+			}
+			else {
+				fireTime += float(deltaTime);
+			}
+		}
 	}
-	//engineParticles->Emit(position, vec3(sin(rotation.z), -cos(rotation.z), 0) * length(inputVector));'
+	else {
+		if (Input::GetButtonDown(playerControllerId, 0)) {
+			if (powerup == 2) {
+				for (int i = 0; i < 5; i++) {
+					Shoot((rotation.z - glm::radians(10.0f)) + glm::radians((float)i * 4));
+				}
+			}
+			else {
+				Shoot(rotation.z);
+			}
+		}
+	}
 
 	if (position.x > 250) {
 		position.x = 250;
@@ -70,7 +93,13 @@ void PlayerShip::Update(double deltaTime) {
 	}
 }
 
+void PlayerShip::Shoot(float direction) {
+	vec3 pVelocity = vec3(-sin(direction), cos(direction), 0);
+	Spawn(Projectile(shaderProgram, position, (pVelocity * 2.0f) + velocity, this));
+}
+
 void PlayerShip::Render() {
+	printf("RENDERAR :D\n");
 	Actor::Render();
 
 	glUniform3f(colorID, color.r, color.g, color.b);
@@ -81,14 +110,14 @@ void PlayerShip::Render() {
 void PlayerShip::Damage() {
 	if (health <= 0) return;
 
-	new PopText(shaderProgram, GetDefaultFont(), position - vec3(2,0,0), vec3(1, 1, 1), "hit");
+	Spawn(PopText(shaderProgram, GetDefaultFont(), position - vec3(2,0,0), vec3(1, 1, 1), "hit"));
 
 	health--;
 
 	if (health <= 0) {
-		healthText->SetText("Player " + std::to_string(playerControllerId + 1) + "  Dead \x07  None");
-		dynamic_cast<MultiChaseCam*>(GetCamera())->RemoveTarget(this);
-		Despawn(this);
+		healthText.SetText("Player " + std::to_string(playerControllerId + 1) + "  Dead \x07  None");
+		GetCamera().RemoveTarget(id);
+		Despawn(id);
 	}
 
 	UpdateText();
@@ -96,10 +125,10 @@ void PlayerShip::Damage() {
 
 void PlayerShip::UpdateText() {
 	if (health <= 0) {
-		healthText->SetText("Player " + std::to_string(playerControllerId + 1) + "  Dead \x07  None");
+		healthText.SetText("Player " + std::to_string(playerControllerId + 1) + "  Dead \x07  ");
 	}
 	else {
-		healthText->SetText("Player " + std::to_string(playerControllerId + 1) + "  " + std::to_string(health) + "       None");
+		healthText.SetText("Player " + std::to_string(playerControllerId + 1) + "  " + std::to_string(health) + "       None");
 	}
 }
 

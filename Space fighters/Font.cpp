@@ -21,10 +21,10 @@ Font::Font(const char* file)
 			int i = 0;
 			while (getline(ss, token, ',')) {
 				points[line][1 + i] = stof(token);
-				cout << points[line][1 + i] << ", ";
+				//cout << points[line][1 + i] << ", ";
 				i++;
 			}
-			cout << " (" << i << ")" << endl;
+			//cout << " (" << i << ")" << endl;
 			points[line][0] = (float)i + 1;
 
 			line++;

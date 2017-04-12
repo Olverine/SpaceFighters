@@ -24,13 +24,13 @@ void Projectile::Update(double deltaTime) {
 		if (PlayerShip::GetShip(i) != 0 || PlayerShip::GetShip(i)->health > 0) {
 			if (Distance(position, PlayerShip::GetShip(i)->position) < 1 && PlayerShip::GetShip(i) != shooter) {
 				PlayerShip::GetShip(i)->Damage();
-				Despawn(this);
+				Despawn(id);
 			}
 		}
 	}
 
 	if (lifeTime >= maxLifeTime) {
-		Despawn(this);
+		Despawn(id);
 	}
 
 	if (position.x > 250) {

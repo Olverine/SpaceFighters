@@ -9,7 +9,7 @@ class Pickup :
 	std::string text = "Pickup";
 	GLuint colorID = 0;
 public:
-	UIText* label;
+	UIText label = UIText(NULL, nullptr);
 	Pickup(GLuint shaderProgram, std::string text, glm::vec3 color);
 	~Pickup();
 	void Render();

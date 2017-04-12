@@ -8,13 +8,13 @@ Pickup::Pickup(GLuint shaderProgram, std::string text, glm::vec3 color)
 	this->color = color;
 	//position.x = (rand() % 1000);
 	//position.y = (rand() % 1000) - 500;
-	label = new UIText(shaderProgram, GetDefaultFont());
-	label->position = position;
-	label->fixedOnScreen = false;
-	label->scale = glm::vec3(1, 1, 1);
-	label->position = glm::vec3(-0.75f * text.length(), 1, 2);
-	label->Initialize();
-	label->SetText(text);
+	label = UIText(shaderProgram, GetDefaultFont());
+	label.position = position;
+	label.fixedOnScreen = false;
+	label.scale = glm::vec3(1, 1, 1);
+	label.position = glm::vec3(-0.75f * text.length(), 1, 2);
+	label.Initialize();
+	label.SetText(text);
 	Spawn(label);
 
 	vertices.push_back(0);
@@ -39,8 +39,7 @@ Pickup::Pickup(GLuint shaderProgram, std::string text, glm::vec3 color)
 }
 
 Pickup::~Pickup() {
-	Despawn(label);
-	delete(label);
+	Despawn(label.id);
 }
 
 void Pickup::Render() {
@@ -52,7 +51,7 @@ void Pickup::Render() {
 }
 
 void Pickup::Update(double deltaTime) {
-	rotation.y += 0.02f * deltaTime;
+	rotation.y += 0.02f * float(deltaTime);
 	for (int i = 0; i < PlayerShip::GetNumberOfplayers(); i++) {
 		if (Distance(glm::vec2(position.x, position.y), glm::vec2(PlayerShip::GetShip(i)->position.x, PlayerShip::GetShip(i)->position.y)) <= 3) {
 			OnPicked(PlayerShip::GetShip(i));

@@ -16,8 +16,9 @@ using namespace glm;
 GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_path);
 GLFWwindow* GetWindow();
 
-void Spawn(Actor* actor);
-void Despawn(Actor* actor);
+void Spawn(Actor actor);
+void Despawn(unsigned);
+void ShrinkVector();
 
 float Lerp(float, float, float);
 float LerpAngle(float, float, float);

@@ -4,20 +4,6 @@
 
 using namespace std;
 
-GLuint colorID;
-
-UIText::UIText(GLuint shaderProgram, Font* font)
-{
-	this->font = font;
-	this->shaderProgram = shaderProgram;
-	colorID = glGetUniformLocation(shaderProgram, "inColor");
-	
-
-	usage = GL_DYNAMIC_DRAW;
-	vertSize = 2;
-	fixedOnScreen = true;
-}
-
 void UIText::SetText(string text) {
 	transform(text.begin(), text.end(), text.begin(), ::toupper);
 	vertices.clear(); 
@@ -33,13 +19,12 @@ void UIText::SetText(string text) {
 	}
 
 	RebindVertices();
-	//Initialize();
 }
 
 void UIText::Render() {
 	Actor::Render();
 
 	glUniform3f(colorID, color.r, color.g, color.b);
-	glDrawArrays(GL_LINES, 0, vertices.size() * sizeof(GLfloat));
+	glDrawArrays(GL_LINES, 0, numberOfVerts);
 	glDisableVertexAttribArray(0);
 }
