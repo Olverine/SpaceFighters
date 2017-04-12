@@ -53,6 +53,12 @@ void Pickup::Render() {
 
 void Pickup::Update(double deltaTime) {
 	rotation.y += 0.02f * deltaTime;
+	for (int i = 0; i < PlayerShip::GetNumberOfplayers(); i++) {
+		if (Distance(glm::vec2(position.x, position.y), glm::vec2(PlayerShip::GetShip(i)->position.x, PlayerShip::GetShip(i)->position.y)) <= 3) {
+			OnPicked(PlayerShip::GetShip(i));
+			break;
+		}
+	}
 }
 
 void Pickup::OnPicked(PlayerShip* player) {

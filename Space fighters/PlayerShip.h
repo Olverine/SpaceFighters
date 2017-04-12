@@ -23,6 +23,7 @@ public:
 	void Update(double deltaTime);
 	void Render();
 	void Damage();
+	void UpdateText();
 	static PlayerShip* GetShip(int playerController);
 	static int GetNumberOfplayers();
 };

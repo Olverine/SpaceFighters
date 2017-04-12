@@ -5,4 +5,6 @@ class HealthPickup :
 {
 public:
 	HealthPickup(GLuint shaderProgram) : Pickup(shaderProgram, "+1", glm::vec3(0, 0.5f, 0)) {}
+
+	void OnPicked(PlayerShip* ship);
 };

@@ -84,12 +84,22 @@ void PlayerShip::Damage() {
 	new PopText(shaderProgram, GetDefaultFont(), position - vec3(2,0,0), vec3(1, 1, 1), "hit");
 
 	health--;
-	healthText->SetText("Player " + std::to_string(playerControllerId + 1) + "  " + std::to_string(health) + "       None");
 
 	if (health <= 0) {
 		healthText->SetText("Player " + std::to_string(playerControllerId + 1) + "  Dead \x07  None");
 		dynamic_cast<MultiChaseCam*>(GetCamera())->RemoveTarget(this);
 		Despawn(this);
+	}
+
+	UpdateText();
+}
+
+void PlayerShip::UpdateText() {
+	if (health <= 0) {
+		healthText->SetText("Player " + std::to_string(playerControllerId + 1) + "  Dead \x07  None");
+	}
+	else {
+		healthText->SetText("Player " + std::to_string(playerControllerId + 1) + "  " + std::to_string(health) + "       None");
 	}
 }
 

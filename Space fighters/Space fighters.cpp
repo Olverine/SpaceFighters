@@ -87,11 +87,11 @@ int main()
 
 	camera = new MultiChaseCam();
 	for (int i = 0; i < 4; i++) {
-		//if (glfwJoystickPresent(i)) {
+		if (glfwJoystickPresent(i)) {
 			activeActors.push_back(new PlayerShip(i, shaderProgram, colors[i]));
 			dynamic_cast<MultiChaseCam*>(camera)->targets.push_back(activeActors.back());
 			activeActors.back()->position.x = -24 + i * 16;
-		//}
+		}
 	} 
 	activeActors.push_back(new BackgroundParticles(vec3(1000, 1000, 200), 20000, shaderProgram));
 	activeActors.push_back(new Bounds(vec2(500, 500), shaderProgram, vec3(0.2f, 1, 1)));

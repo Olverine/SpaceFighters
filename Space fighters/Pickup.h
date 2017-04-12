@@ -7,9 +7,9 @@ class Pickup :
 	public Actor
 {
 	std::string text = "Pickup";
-	UIText* label;
 	GLuint colorID = 0;
 public:
+	UIText* label;
 	Pickup(GLuint shaderProgram, std::string text, glm::vec3 color);
 	~Pickup();
 	void Render();
