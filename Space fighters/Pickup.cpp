@@ -6,13 +6,13 @@ Pickup::Pickup(GLuint shaderProgram, std::string text, glm::vec3 color)
 	this->shaderProgram = shaderProgram;
 	this->text = text;
 	this->color = color;
-	//position.x = (rand() % 1000);
-	//position.y = (rand() % 1000) - 500;
+	position.x = (rand() % 500) - 250;
+	position.y = (rand() % 500) - 250;
 	label = new UIText(shaderProgram, GetDefaultFont());
 	label->position = position;
 	label->fixedOnScreen = false;
 	label->scale = glm::vec3(1, 1, 1);
-	label->position = glm::vec3(-0.75f * text.length(), 1, 2);
+	label->position = position + glm::vec3(-0.75f * text.length(), 1, 2);
 	label->Initialize();
 	label->SetText(text);
 	Spawn(label);

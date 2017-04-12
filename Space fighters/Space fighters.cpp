@@ -8,7 +8,7 @@
 #include <MultiChaseCam.h>
 #include <Text.h>
 #include <FramerateCounter.h>
-#include <HealthPickup.h>
+#include <PowerupSpawner.h>
 
 void MainLoop();
 GLFWwindow* window;
@@ -75,8 +75,6 @@ int main()
 	playerLabel->SetText("Name      Health  Powerup");
 	activeActors.push_back(playerLabel);
 
-	Spawn(new HealthPickup(shaderProgram));
-
 	// Create players
 	vec3 colors[] = {
 		vec3(0, 0.5f, 1),
@@ -95,7 +93,9 @@ int main()
 	} 
 	activeActors.push_back(new BackgroundParticles(vec3(1000, 1000, 200), 20000, shaderProgram));
 	activeActors.push_back(new Bounds(vec2(500, 500), shaderProgram, vec3(0.2f, 1, 1)));
-	activeActors.push_back(new ParticleEmitter(shaderProgram));
+	//activeActors.push_back(new ParticleEmitter(shaderProgram));
+
+	activeActors.push_back(new PowerupSpawner(shaderProgram));
 
 	for each (Actor* actor in activeActors) {
 		actor->Initialize();
@@ -112,17 +112,19 @@ int main()
 	// Accept fragment if it closer to the camera than the former one
 	glDepthFunc(GL_LESS);
 
+	glfwSetTime(0);
+
 	MainLoop();
 
     return 0;
 }
 
-double lastFrame = 0;
+double lastTime = 0;
 
 void MainLoop() {
 	do {
 		double time = glfwGetTime();
-		double deltaTime = time - lastFrame;
+		double deltaTime = (time - lastTime);
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -166,7 +168,7 @@ void MainLoop() {
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-		lastFrame = time;
+		lastTime = time;
 	} while (!glfwWindowShouldClose(window));
 }
 

@@ -11,16 +11,23 @@ class PlayerShip : public Actor
 	float drag = 0.005f;
 	int playerControllerId; 
 	GLuint colorID;
+
+	float fireRate = 0.1f;
+	float fireTime = 1;
 public:
 	glm::vec3 velocity;
 	glm::vec3 color;
 	//ParticleEmitter* engineParticles;
 	int health = 3;
-	UIText *healthText;
+	UIText* healthText = new UIText(NULL, nullptr);
+
+	int powerup = 0;
+	double powerupTime = 0;
 
 	PlayerShip(int controllerId, GLuint shaderProgram, glm::vec3 color);
 
 	void Update(double deltaTime);
+	void Shoot(float);
 	void Render();
 	void Damage();
 	void UpdateText();

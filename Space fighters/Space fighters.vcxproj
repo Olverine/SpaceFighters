@@ -165,6 +165,8 @@
     <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="Pickup.h" />
     <ClInclude Include="PopText.h" />
+    <ClInclude Include="PowerupPickup.h" />
+    <ClInclude Include="PowerupSpawner.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -186,6 +188,8 @@
     <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="Pickup.cpp" />
     <ClCompile Include="PopText.cpp" />
+    <ClCompile Include="PowerupPickup.cpp" />
+    <ClCompile Include="PowerupSpawner.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ShaderCompiler.cpp" />
     <ClCompile Include="Space fighters.cpp" />

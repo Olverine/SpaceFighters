@@ -87,6 +87,12 @@
     <ClInclude Include="HealthPickup.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
+    <ClInclude Include="PowerupPickup.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerupSpawner.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -147,6 +153,12 @@
       <Filter>Source Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="HealthPickup.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="PowerupPickup.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="PowerupSpawner.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
   </ItemGroup>

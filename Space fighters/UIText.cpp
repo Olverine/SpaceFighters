@@ -11,11 +11,12 @@ UIText::UIText(GLuint shaderProgram, Font* font)
 	this->font = font;
 	this->shaderProgram = shaderProgram;
 	colorID = glGetUniformLocation(shaderProgram, "inColor");
-	
 
 	usage = GL_DYNAMIC_DRAW;
 	vertSize = 2;
 	fixedOnScreen = true;
+
+	Initialize();
 }
 
 void UIText::SetText(string text) {
