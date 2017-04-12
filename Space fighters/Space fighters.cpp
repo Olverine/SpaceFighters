@@ -157,7 +157,7 @@ void MainLoop() {
 			activeActors.back().Render();
 		}
 		spawnQueue.clear();
-		for each (unsigned id in despawnQueue) {
+		for each (unsigned id in despawnQueue) { 
 			for (int i = 0; i < activeActors.size(); i++) {
 				if (activeActors[i].id == id) {
 					activeActors.erase(activeActors.begin() + i);
