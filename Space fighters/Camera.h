@@ -6,7 +6,7 @@ public:
 	float fov = 60;
 	float aspectRatio = 16.0f / 9.0f; 
 	float nearClip = 0.1f;
-	float farClip = 600.0f;
+	float farClip = 6000.0f;
 
 	glm::vec3 position;
 	glm::vec3 lookAt;
