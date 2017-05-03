@@ -12,7 +12,7 @@ Projectile::Projectile(GLuint shaderProgram, glm::vec3 position, glm::vec3 veloc
 	Initialize();
 	this->shaderProgram = shaderProgram;
 	this->color = shooter->color;
-	colorID = glGetUniformLocation(shaderProgram, "inColor");
+	colorID = glGetUniformLocation(shaderProgram, "inColor"); 
 }
 
 void Projectile::Update(double deltaTime) {
