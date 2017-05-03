@@ -1,24 +1,8 @@
 ﻿  Microsoft (R) C/C++ Optimizing Compiler Version 19.00.24215.1 for x86
   Copyright (C) Microsoft Corporation.  All rights reserved.
   
-  cl /c /I"C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\deps\freetype-2.7.1\include" /I"C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\Space fighters\\" /I"C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\Space fighters\..\deps\glew-2.0.0\include" /I"C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\Space fighters\..\deps\glm-0.9.8.3" /I"C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\Space fighters\..\deps\glfw\Win32\include\GLFW" /ZI /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Camera.cpp FramerateCounter.cpp HealthPickup.cpp Input.cpp MultiChaseCam.cpp ParticleEmitter.cpp Pickup.cpp PlayerShip.cpp PopText.cpp PowerupPickup.cpp PowerupSpawner.cpp Projectile.cpp ShaderCompiler.cpp "Space fighters.cpp" Text.cpp
+  cl /c /I"C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\deps\freetype-2.7.1\include" /I"C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\Space fighters\\" /I"C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\Space fighters\..\deps\glew-2.0.0\include" /I"C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\Space fighters\..\deps\glm-0.9.8.3" /I"C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\Space fighters\..\deps\glfw\Win32\include\GLFW" /ZI /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Projectile.cpp
   
-  Camera.cpp
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  Text.cpp
-  Space fighters.cpp
-  ShaderCompiler.cpp
   Projectile.cpp
-  PowerupSpawner.cpp
-  PowerupPickup.cpp
-  PopText.cpp
-  PlayerShip.cpp
-  Pickup.cpp
-  ParticleEmitter.cpp
-  MultiChaseCam.cpp
-  Input.cpp
-  HealthPickup.cpp
-  FramerateCounter.cpp
   Space fighters.vcxproj -> C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\Debug\Space fighters.exe
   Space fighters.vcxproj -> C:\Users\noolt4\Source\Repos\SpaceFightersOpenGLProject\Debug\Space fighters.pdb (Full PDB)

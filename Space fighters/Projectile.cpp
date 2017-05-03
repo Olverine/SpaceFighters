@@ -21,9 +21,11 @@ void Projectile::Update(double deltaTime) {
 	lifeTime+= deltaTime;
 	for (int i = 0; i < PlayerShip::GetNumberOfplayers(); i++)
 	{
-		if (PlayerShip::GetShip(i) != 0 || PlayerShip::GetShip(i)->health > 0) {
-			if (Distance(position, PlayerShip::GetShip(i)->position) < 1 && PlayerShip::GetShip(i) != shooter) {
-				PlayerShip::GetShip(i)->Damage();
+		PlayerShip* ship = PlayerShip::GetShip(i);
+		if (ship->health > 0) {
+			if (Distance(position, ship->position) < 1 && ship != shooter) {
+				ship->Damage();
+				ship->velocity += velocity * 0.1f;
 				Despawn(this);
 			}
 		}
